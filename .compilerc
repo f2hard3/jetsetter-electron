@@ -7,13 +7,14 @@
             "env",
             {
               "targets": {
-                "electron": "1.6"
+                "electron": "5.0"
               }
             }
           ],
           "react"
         ],
         "plugins": [
+          "react-hot-loader/babel",
           "transform-async-to-generator",
           "transform-es2015-modules-commonjs",
           "transform-object-rest-spread"
@@ -31,7 +32,7 @@
             "env",
             {
               "targets": {
-                "electron": "1.6"
+                "electron": "5.0"
               }
             }
           ],

@@ -1,35 +1,78 @@
 import React, { Component } from 'react';
-import Items from './Items';
 import NewItem from './NewItem';
+import Items from './Items';
 
 class Application extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            items: [{ value: 'Pants', id: Date.now(), packed: false }]
-        };
+
+        this.state = { items: [] };
+
+        this.fetchItems = this.fetchItems.bind(this);
         this.addItem = this.addItem.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
+        this.deleteUnpackedItems = this.deleteUnpackedItems.bind(this);
         this.markAsPacked = this.markAsPacked.bind(this);
         this.markAllAsUnpacked = this.markAllAsUnpacked.bind(this);
     }
 
-    addItem(item) {
-        this.setState({ items: [...this.state.items, item] });
+    async componentDidMount() {
+        this.fetchItems();
     }
-    markAsPacked(item) {
-        const otherItems = this.state.items.filter(
-            other => other.id != item.id
-        );
-        const updatedItem = { ...item, packed: !item.packed };
 
-        this.setState({ items: [...otherItems, updatedItem] });
+    fetchItems() {
+        this.props
+            .database('items')
+            .select()
+            .then(items => this.setState({ items }))
+            .catch(console.error);
     }
+
+    addItem(item) {
+        this.props
+            .database('items')
+            .insert(item)
+            .then(this.fetchItems);
+    }
+
+    deleteItem(item) {
+        this.props
+            .database('items')
+            .where('id', item.id)
+            .delete()
+            .then(this.fetchItems)
+            .catch(console.error);
+    }
+
+    markAsPacked(item) {
+        this.props
+            .database('items')
+            .where('id', '=', item.id)
+            .update({
+                packed: !item.packed
+            })
+            .then(this.fetchItems)
+            .catch(console.error);
+    }
+
     markAllAsUnpacked() {
-        const items = this.state.items.map(item => ({
-            ...item,
-            packed: false
-        }));
-        this.setState({ items });
+        this.props
+            .database('items')
+            .where('packed', true)
+            .update({
+                packed: false
+            })
+            .then(this.fetchItems)
+            .catch(console.error);
+    }
+
+    deleteUnpackedItems() {
+        this.props
+            .database('items')
+            .where('packed', false)
+            .delete()
+            .then(this.fetchItems)
+            .catch(console.error);
     }
 
     render() {
@@ -44,14 +87,25 @@ class Application extends Component {
                     title="Unpacked Items"
                     items={unpackedItems}
                     onCheckOff={this.markAsPacked}
+                    onDelete={this.deleteItem}
                 />
                 <Items
                     title="Packed Items"
                     items={packedItems}
                     onCheckOff={this.markAsPacked}
+                    onDelete={this.deleteItem}
                 />
-                <button className="full-width" onClick={this.markAllAsUnpacked}>
+                <button
+                    className="button full-width"
+                    onClick={this.markAllAsUnpacked}
+                >
                     Mark All As Unpacked
+                </button>
+                <button
+                    className="button full-width secondary"
+                    onClick={this.deleteUnpackedItems}
+                >
+                    Remove Unpacked Items
                 </button>
             </div>
         );

@@ -12,7 +12,8 @@ class NewItem extends Component {
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        const { value } = event.target;
+        this.setState({ value });
     }
 
     handleSubmit(event) {
@@ -20,7 +21,7 @@ class NewItem extends Component {
         const { value } = this.state;
 
         event.preventDefault();
-        onSubmit({ value, id: Date.now(), packed: false });
+        onSubmit({ value, packed: false });
         this.setState({ value: '' });
     }
 

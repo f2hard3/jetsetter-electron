@@ -10,12 +10,10 @@ app.on('ready', () => {
         width: 300,
         height: 600,
         minWidth: 300,
-        show: false,
-        webPreferences: {
-          nodeIntegration: true
-        }
+        minHeight: 300,
+        show: false
     });
-    mainWindow.loadFile(`${__dirname}/index.html`);
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
     });

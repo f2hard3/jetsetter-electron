@@ -7,7 +7,7 @@
             "env",
             {
               "targets": {
-                "electron": "5.0"
+                "electron": "4.0"
               }
             }
           ],
@@ -15,6 +15,9 @@
         ],
         "plugins": [
           "react-hot-loader/babel",
+          "syntax-dynamic-import",
+          "dynamic-import-node",
+          "transform-es2015-classes",
           "transform-async-to-generator",
           "transform-es2015-modules-commonjs",
           "transform-object-rest-spread"
@@ -32,13 +35,16 @@
             "env",
             {
               "targets": {
-                "electron": "5.0"
+                "electron": "4.0"
               }
             }
           ],
           "react"
         ],
         "plugins": [
+          "syntax-dynamic-import",
+          "dynamic-import-node",
+          "transform-es2015-classes",
           "transform-async-to-generator",
           "transform-es2015-modules-commonjs",
           "transform-object-rest-spread"

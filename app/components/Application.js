@@ -16,110 +16,110 @@ class Application extends Component {
         this.markAllAsUnpacked = this.markAllAsUnpacked.bind(this);
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.fetchItems();
     }
 
-    // fetchItems() {
-    //     this.props
-    //         .database('items')
-    //         .select()
-    //         .then(items => this.setState({ items }))
-    //         .catch(console.error);
-    // }
-
-    // addItem(item) {
-    //     this.props
-    //         .database('items')
-    //         .insert(item)
-    //         .then(this.fetchItems);
-    // }
-
-    // deleteItem(item) {
-    //     this.props
-    //         .database('items')
-    //         .where('id', item.id)
-    //         .delete()
-    //         .then(this.fetchItems)
-    //         .catch(console.error);
-    // }
-
-    // markAsPacked(item) {
-    //     this.props
-    //         .database('items')
-    //         .where('id', '=', item.id)
-    //         .update({
-    //             packed: !item.packed
-    //         })
-    //         .then(this.fetchItems)
-    //         .catch(console.error);
-    // }
-
-    // markAllAsUnpacked() {
-    //     this.props
-    //         .database('items')
-    //         .where('packed', true)
-    //         .update({
-    //             packed: false
-    //         })
-    //         .then(this.fetchItems)
-    //         .catch(console.error);
-    // }
-
-    // deleteUnpackedItems() {
-    //     this.props
-    //         .database('items')
-    //         .where('packed', false)
-    //         .delete()
-    //         .then(this.fetchItems)
-    //         .catch(console.error);
-    // }
-
-    async fetchItems() {
-        try {
-            const items = await this.props.database.getAll();
-            this.setState({ items });
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    addItem(item) {
-        this.props.database
-            .add(item)
-            .then(this.fetchItems)
+    fetchItems() {
+        this.props
+            .database('items')
+            .select()
+            .then(items => this.setState({ items }))
             .catch(console.error);
     }
 
+    addItem(item) {
+        this.props
+            .database('items')
+            .insert(item)
+            .then(this.fetchItems);
+    }
+
     deleteItem(item) {
-        this.props.database
-            .delete(item)
+        this.props
+            .database('items')
+            .where('id', item.id)
+            .delete()
             .then(this.fetchItems)
             .catch(console.error);
     }
 
     markAsPacked(item) {
-        const updatedItem = { ...item, packed: !item.packed };
-
-        this.props.database
-            .update(updatedItem)
+        this.props
+            .database('items')
+            .where('id', '=', item.id)
+            .update({
+                packed: !item.packed
+            })
             .then(this.fetchItems)
             .catch(console.error);
     }
 
     markAllAsUnpacked() {
-        this.props.database
-            .markAllAsUnpacked()
+        this.props
+            .database('items')
+            .where('packed', true)
+            .update({
+                packed: false
+            })
             .then(this.fetchItems)
             .catch(console.error);
     }
 
     deleteUnpackedItems() {
-        this.props.database
-            .deleteUnpackedItems()
+        this.props
+            .database('items')
+            .where('packed', false)
+            .delete()
             .then(this.fetchItems)
             .catch(console.error);
     }
+
+    // async fetchItems() {
+    //     try {
+    //         const items = await this.props.database.getAll();
+    //         this.setState({ items });
+    //     } catch (err) {
+    //         console.error(err)
+    //     }
+    // }
+
+    // addItem(item) {
+    //     this.props.database
+    //         .add(item)
+    //         .then(this.fetchItems)
+    //         .catch(console.error);
+    // }
+
+    // deleteItem(item) {
+    //     this.props.database
+    //         .delete(item)
+    //         .then(this.fetchItems)
+    //         .catch(console.error);
+    // }
+
+    // markAsPacked(item) {
+    //     const updatedItem = { ...item, packed: !item.packed };
+
+    //     this.props.database
+    //         .update(updatedItem)
+    //         .then(this.fetchItems)
+    //         .catch(console.error);
+    // }
+
+    // markAllAsUnpacked() {
+    //     this.props.database
+    //         .markAllAsUnpacked()
+    //         .then(this.fetchItems)
+    //         .catch(console.error);
+    // }
+
+    // deleteUnpackedItems() {
+    //     this.props.database
+    //         .deleteUnpackedItems()
+    //         .then(this.fetchItems)
+    //         .catch(console.error);
+    // }
 
     render() {
         const { items } = this.state;
